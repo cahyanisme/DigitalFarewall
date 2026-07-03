@@ -1,0 +1,816 @@
+/* ==========================================================================
+   DIGITAL FAREWELL MEMORY — Soft Pastel Redesign
+   Inspired by: warm cream · pastel orange · lavender · mint · golden yellow
+   Vibes: sweet, warm, farewell, Gen Z-friendly but gentle
+   ========================================================================== */
+
+:root {
+  /* ── Pastel Palette (Headspace-inspired) ──── */
+  --cream:        #FFF8F0;      /* warm cream background */
+  --cream-2:      #FFF0E0;      /* slightly deeper cream */
+  --orange:       #FF8C5A;      /* warm pastel orange */
+  --orange-soft:  #FFBF9B;      /* light peach */
+  --orange-pale:  #FFE8D9;      /* very pale orange tint */
+  --yellow:       #FFCC66;      /* golden yellow */
+  --yellow-pale:  #FFF5CC;      /* pale yellow */
+  --lavender:     #C5A8E8;      /* soft lavender */
+  --lavender-pale:#EEE4F8;      /* pale lavender */
+  --mint:         #7DD4C0;      /* mint/teal */
+  --mint-pale:    #D4F2EC;      /* pale mint */
+  --coral:        #FF7B6B;      /* warm coral */
+
+  /* ── Text ──────────────────────────────────── */
+  --text-dark:    #2D2926;      /* deep warm charcoal */
+  --text-mid:     #5C4F46;      /* warm medium brown */
+  --text-soft:    #9E8E84;      /* muted rose-grey */
+
+  /* ── Typography ────────────────────────────── */
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-body:    'Poppins', system-ui, sans-serif;
+
+  /* ── Shapes ─────────────────────────────────── */
+  --radius-sm:  12px;
+  --radius-md:  20px;
+  --radius-lg:  30px;
+  --radius-xl:  50px;
+
+  /* ── Shadows ─────────────────────────────────── */
+  --shadow-soft:   0 6px 24px rgba(255, 140, 90, 0.12);
+  --shadow-card:   0 8px 32px rgba(45, 41, 38, 0.08), 0 2px 8px rgba(45, 41, 38, 0.04);
+  --shadow-btn:    0 4px 16px rgba(255, 140, 90, 0.3);
+}
+
+/* ──────────────────────────────────────────────
+   RESET & BASE
+   ────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--cream);
+  color: var(--text-dark);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* ──────────────────────────────────────────────
+   BACKGROUND: Soft pastel blob decorations
+   ────────────────────────────────────────────── */
+.bg-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.circle-1 {
+  width: 500px;
+  height: 500px;
+  top: -15%;
+  right: -18%;
+  background: radial-gradient(circle, #FFCC66 0%, #FFBF9B 60%, transparent 80%);
+  animation: blobDrift1 20s ease-in-out infinite alternate;
+}
+
+.circle-2 {
+  width: 420px;
+  height: 420px;
+  bottom: -12%;
+  left: -16%;
+  background: radial-gradient(circle, #C5A8E8 0%, #7DD4C0 60%, transparent 80%);
+  animation: blobDrift2 26s ease-in-out infinite alternate;
+}
+
+/* Decorative floating emoji leaves — keep hidden (we don't need them) */
+.leaf { display: none; }
+
+/* ──────────────────────────────────────────────
+   APP CONTAINER
+   ────────────────────────────────────────────── */
+.app-container {
+  width: 100%;
+  max-width: 420px;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem 1.4rem 1.75rem;
+}
+
+/* ──────────────────────────────────────────────
+   SCREEN WRAPPER
+   ────────────────────────────────────────────── */
+.screen {
+  display: none;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.screen.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* ──────────────────────────────────────────────
+   BUTTON SYSTEM
+   ────────────────────────────────────────────── */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.9rem 1.7rem;
+  border: none;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+/* Primary: warm orange */
+.btn-primary {
+  background-color: var(--orange);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(255, 140, 90, 0.38);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #FF7A47;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(255, 140, 90, 0.45);
+}
+
+/* Secondary: soft lavender-tinted white */
+.btn-secondary {
+  background-color: var(--lavender-pale);
+  color: var(--text-mid);
+  border: 1.5px solid rgba(197, 168, 232, 0.5);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #E4D4F8;
+  transform: translateY(-3px) scale(1.02);
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ──────────────────────────────────────────────
+   1. LANDING PAGE
+   ────────────────────────────────────────────── */
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  gap: 1.3rem;
+}
+
+/* Pill badge — yellow with dark text */
+.badge {
+  background-color: var(--yellow);
+  color: var(--text-dark);
+  padding: 0.38rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(255, 204, 102, 0.35);
+}
+
+/* Main display title */
+.main-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-dark);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  line-height: 1.7;
+  max-width: 88%;
+}
+
+/* Recipient card — warm cream with orange left accent */
+.recipient-card {
+  background-color: #fff;
+  border: 1.5px solid var(--orange-pale);
+  padding: 1.1rem 1.4rem;
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orange left bar */
+.recipient-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--orange), var(--yellow));
+  border-radius: 4px 0 0 4px;
+}
+
+.to-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.recipient-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+/* ── Envelope ── */
+.envelope-wrapper {
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+}
+
+.envelope {
+  position: relative;
+  width: 190px;
+  height: 126px;
+  background-color: var(--lavender-pale);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(197, 168, 232, 0.3);
+  transition: transform 0.35s ease;
+  border: 1.5px solid rgba(197, 168, 232, 0.5);
+}
+
+.envelope:hover {
+  transform: scale(1.04) rotate(-1deg);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 95px solid transparent;
+  border-right: 95px solid transparent;
+  border-top: 63px solid var(--lavender);
+  transform-origin: top;
+  z-index: 4;
+  transition: transform 0.5s ease-in-out;
+}
+
+.envelope-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 190px;
+  height: 126px;
+  background-color: var(--lavender-pale);
+  border-radius: 0 0 12px 12px;
+  clip-path: polygon(0 40px, 95px 82px, 190px 40px, 190px 126px, 0 126px);
+  z-index: 3;
+}
+
+.envelope-letter {
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  width: 154px;
+  height: 105px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1.5px solid var(--orange-pale);
+  box-shadow: 0 4px 12px rgba(255, 140, 90, 0.1);
+  z-index: 2;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.letter-preview-line {
+  height: 5px;
+  width: 100%;
+  background-color: var(--orange-pale);
+  border-radius: 3px;
+}
+
+.letter-preview-line.short {
+  width: 55%;
+  background-color: var(--yellow-pale);
+}
+
+.letter-heart {
+  color: var(--orange);
+  font-size: 1.1rem;
+  margin-top: auto;
+  align-self: center;
+  animation: beatHeart 1.5s infinite alternate;
+}
+
+/* Open envelope states */
+.envelope-wrapper:hover .envelope-flap,
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrapper:hover .envelope-letter,
+.envelope-wrapper.open .envelope-letter {
+  transform: translateY(-42px);
+}
+
+/* ──────────────────────────────────────────────
+   2. READER PAGE
+   ────────────────────────────────────────────── */
+.reader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.9rem;
+  border-bottom: 1.5px solid var(--orange-pale);
+}
+
+.mini-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-circle-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: 50% 50%;
+}
+
+.progress-text-mini {
+  position: absolute;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+/* Letter desk */
+.letter-desk {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.letter-container {
+  width: 100%;
+  height: 100%;
+  max-height: 430px;
+  display: flex;
+  position: relative;
+}
+
+/* ── Letter Card: Clean white paper with warm details ── */
+.letter-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--orange-pale);
+  box-shadow: var(--shadow-card);
+  padding: 2rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transform-origin: bottom center;
+}
+
+/* Colorful top strip — changes "flavor" per card feel */
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--orange), var(--yellow), var(--mint));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* Subtle dots pattern for a stationery feel */
+.paper-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 140, 90, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  border-radius: var(--radius-lg);
+  z-index: 0;
+}
+
+.letter-content-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Open quote decoration */
+.letter-content-inner::before {
+  content: '"';
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 0.7;
+  color: var(--orange-pale);
+  position: absolute;
+  top: -0.3rem;
+  left: -0.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.letter-message {
+  font-size: clamp(0.9rem, 4vw, 1.02rem);
+  line-height: 1.85;
+  color: var(--text-mid);
+  font-weight: 400;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--orange-pale) transparent;
+  padding-top: 1.2rem;
+}
+
+.letter-message::-webkit-scrollbar {
+  width: 3px;
+}
+.letter-message::-webkit-scrollbar-thumb {
+  background: var(--orange-soft);
+  border-radius: 3px;
+}
+
+/* Signature row */
+.letter-signature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1.5px dashed var(--orange-pale);
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+.letter-sender {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--orange);
+}
+
+/* Reader Footer */
+.reader-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.btn-nav {
+  flex: 1;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.88rem;
+}
+
+.progress-label {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+/* ──────────────────────────────────────────────
+   3. CLOSING PAGE
+   ────────────────────────────────────────────── */
+.closing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  gap: 1.35rem;
+}
+
+/* Mint circle icon orb */
+.closing-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mint-pale);
+  border: 2px solid rgba(125, 212, 192, 0.4);
+  box-shadow: 0 4px 20px rgba(125, 212, 192, 0.25);
+}
+
+.floating-gift {
+  font-size: 2rem;
+  color: var(--mint);
+  animation: floatGift 3s infinite ease-in-out;
+}
+
+.closing-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 7vw, 1.9rem);
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+/* White card with warm border */
+.closing-card {
+  background-color: #fff;
+  border: 1.5px solid var(--orange-pale);
+  padding: 1.6rem 1.4rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.closing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--lavender), var(--mint), var(--yellow));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.closing-message {
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  line-height: 1.8;
+  text-align: left;
+}
+
+.closing-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  border-top: 1.5px dashed var(--orange-pale);
+  padding-top: 0.75rem;
+  gap: 0.15rem;
+}
+
+.sig-from {
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.sig-team {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--orange);
+}
+
+.closing-actions {
+  display: flex;
+  width: 100%;
+  gap: 0.85rem;
+}
+
+.closing-actions .btn {
+  flex: 1;
+}
+
+.footer-credit {
+  font-size: 0.7rem;
+  color: var(--text-soft);
+  letter-spacing: 0.03em;
+}
+
+/* ──────────────────────────────────────────────
+   ANIMATIONS
+   ────────────────────────────────────────────── */
+@keyframes beatHeart {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.22); }
+}
+
+@keyframes floatGift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-9px) rotate(8deg); }
+}
+
+@keyframes blobDrift1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-35px, 55px) scale(1.12); }
+}
+
+@keyframes blobDrift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(45px, -40px) scale(1.08); }
+}
+
+/* Card swipe animations */
+.slide-out-left {
+  animation: slideOutLeft 0.42s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-in-right {
+  animation: slideInRight 0.42s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-out-right {
+  animation: slideOutRight 0.42s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-in-left {
+  animation: slideInLeft 0.42s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideOutLeft {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-115%, 20px) rotate(-10deg); opacity: 0; }
+}
+@keyframes slideInRight {
+  0%   { transform: translate(115%, 20px) rotate(10deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+@keyframes slideOutRight {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(115%, 20px) rotate(10deg); opacity: 0; }
+}
+@keyframes slideInLeft {
+  0%   { transform: translate(-115%, 20px) rotate(-10deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+
+/* Screen transitions */
+.fade-out {
+  animation: fadeOut 0.35s forwards ease-in;
+}
+.fade-in {
+  animation: fadeIn 0.35s forwards ease-out;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.97); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ──────────────────────────────────────────────
+   RESPONSIVE
+   ────────────────────────────────────────────── */
+@media (max-height: 667px) {
+  .app-container {
+    padding: 0.9rem 1rem 1rem;
+  }
+  .main-title {
+    font-size: 1.75rem;
+  }
+  .envelope-wrapper {
+    height: 118px;
+  }
+  .envelope {
+    width: 158px;
+    height: 104px;
+  }
+  .envelope-flap {
+    border-left-width: 79px;
+    border-right-width: 79px;
+    border-top-width: 52px;
+  }
+  .envelope-front {
+    width: 158px;
+    height: 104px;
+    clip-path: polygon(0 33px, 79px 68px, 158px 33px, 158px 104px, 0 104px);
+  }
+  .envelope-letter {
+    width: 126px;
+    height: 84px;
+    left: 14px;
+  }
+  .letter-paper {
+    padding: 1.5rem 1.4rem 1.4rem;
+  }
+  .letter-desk {
+    padding: 0.6rem 0;
+  }
+  .letter-message {
+    font-size: 0.88rem;
+  }
+  .closing-card {
+    padding: 1.1rem 1rem;
+  }
+  .btn {
+    padding: 0.72rem 1.1rem;
+    font-size: 0.87rem;
+  }
+}
+
+/* Tablet / Desktop: floating card style */
+@media (min-width: 768px) {
+  body {
+    background: linear-gradient(135deg, #FFF5E6 0%, #FFF0F8 50%, #EEF8F5 100%);
+  }
+  .app-container {
+    background-color: var(--cream);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 24px 64px rgba(255, 140, 90, 0.12),
+      0 4px 16px rgba(45, 41, 38, 0.06);
+    height: 860px;
+    max-height: 92vh;
+    border: 1.5px solid var(--orange-pale);
+  }
+}

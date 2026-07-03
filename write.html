@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Halaman untuk menulis pesan perpisahan khusus rekan kerja.">
+  <title>Tulis Pesan — Digital Farewell Memory</title>
+
+  <!-- Poppins Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ── Design tokens (mirroring styles.css) ── */
+    :root {
+      --cream: #FFF8F0;
+      --cream-2: #FFF0E0;
+      --orange: #FF8C5A;
+      --orange-soft: #FFBF9B;
+      --orange-pale: #FFE8D9;
+      --yellow: #FFCC66;
+      --yellow-pale: #FFF5CC;
+      --lavender: #C5A8E8;
+      --lavender-pale: #EEE4F8;
+      --mint: #7DD4C0;
+      --mint-pale: #D4F2EC;
+      --text-dark: #2D2926;
+      --text-mid: #5C4F46;
+      --text-soft: #9E8E84;
+      --font: 'Poppins', system-ui, sans-serif;
+      --radius-md: 20px;
+      --radius-lg: 30px;
+      --radius-xl: 50px;
+      --shadow-card: 0 8px 32px rgba(45, 41, 38, 0.08), 0 2px 8px rgba(45, 41, 38, 0.04);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--cream);
+      color: var(--text-dark);
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Background blobs ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+    }
+
+    .blob-1 {
+      width: 420px;
+      height: 420px;
+      top: -15%;
+      right: -15%;
+      background: radial-gradient(circle, #FFCC66 0%, #FFBF9B 60%, transparent 80%);
+      animation: drift1 20s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      width: 380px;
+      height: 380px;
+      bottom: -12%;
+      left: -15%;
+      background: radial-gradient(circle, #C5A8E8 0%, #7DD4C0 60%, transparent 80%);
+      animation: drift2 26s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(-30px, 50px) scale(1.1);
+      }
+    }
+
+    @keyframes drift2 {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(40px, -35px) scale(1.08);
+      }
+    }
+
+    /* ── App wrapper ── */
+    .app {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+    }
+
+    /* ── Screen toggle ── */
+    .screen {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.3rem;
+    }
+
+    .screen.active {
+      display: flex;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Badge ── */
+    .badge {
+      background-color: var(--yellow);
+      color: var(--text-dark);
+      padding: 0.35rem 1.1rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 10px rgba(255, 204, 102, 0.35);
+    }
+
+    /* ── Heading ── */
+    h1 {
+      font-size: clamp(1.7rem, 7vw, 2.1rem);
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    p.sub {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.7;
+      max-width: 88%;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border: 1.5px solid var(--orange-pale);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+      padding: 1.6rem 1.4rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--orange), var(--yellow), var(--mint));
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    /* ── Form controls ── */
+    label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background-color: var(--cream);
+      border: 1.5px solid var(--orange-pale);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255, 140, 90, 0.12);
+    }
+
+    textarea {
+      min-height: 140px;
+      line-height: 1.7;
+    }
+
+    /* Character counter */
+    .char-count {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+      text-align: right;
+      margin-top: -0.5rem;
+    }
+
+    .char-count.warn {
+      color: var(--orange);
+    }
+
+    /* ── Error message ── */
+    .error-msg {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #E05A3A;
+      text-align: center;
+      display: none;
+      background: rgba(224, 90, 58, 0.08);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(224, 90, 58, 0.2);
+    }
+
+    .error-msg.visible {
+      display: block;
+      animation: shake 0.35s ease both;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-6px);
+      }
+
+      75% {
+        transform: translateX(6px);
+      }
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 1.7rem;
+      border: none;
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--orange);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255, 140, 90, 0.38);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: #FF7A47;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 28px rgba(255, 140, 90, 0.45);
+    }
+
+    .btn-secondary {
+      background-color: var(--lavender-pale);
+      color: var(--text-mid);
+      border: 1.5px solid rgba(197, 168, 232, 0.5);
+    }
+
+    .btn-secondary:hover {
+      background-color: #E4D4F8;
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(0) scale(0.97);
+    }
+
+    /* Loading spinner inside btn */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── Success icon ── */
+    .success-icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background-color: var(--mint-pale);
+      border: 2px solid rgba(125, 212, 192, 0.4);
+      box-shadow: 0 4px 24px rgba(125, 212, 192, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.4);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* ── Access code dots indicator ── */
+    .dots {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--orange-pale);
+      transition: background-color 0.15s;
+    }
+
+    .dot.filled {
+      background-color: var(--orange);
+    }
+
+    /* ── Footer ── */
+    .footer-note {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Responsive: tablet/desktop card ── */
+    @media (min-width: 768px) {
+      body {
+        background: linear-gradient(135deg, #FFF5E6 0%, #FFF0F8 50%, #EEF8F5 100%);
+      }
+
+      .app {
+        background-color: var(--cream);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 24px 64px rgba(255, 140, 90, 0.12), 0 4px 16px rgba(45, 41, 38, 0.06);
+        border: 1.5px solid var(--orange-pale);
+        padding: 2.5rem 2rem;
+        max-width: 440px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="app">
+
+    <!-- ══════════════════════════
+         SCREEN 1: GATE (Kode Akses)
+         ══════════════════════════ -->
+    <div id="screen-gate" class="screen active">
+      <div class="badge">✦ Pesan Untuk Mbak Ana ✦</div>
+
+      <h1>Hai Suryamers!</h1>
+      <p class="sub">Masukkan kode akses untuk menulis pesan hangat untuk Ana Witantri.</p>
+
+      <div class="card">
+        <label for="input-code">Kode Akses</label>
+        <input type="password" id="input-code" placeholder="Masukkan kode di sini..." maxlength="30" autocomplete="off"
+          spellcheck="false">
+        <div class="error-msg" id="gate-error">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          Kode akses salah. Coba lagi ya!
+        </div>
+        <button class="btn btn-primary" id="btn-unlock">
+          <span>Masuk</span>
+          <i class="fa-solid fa-lock-open"></i>
+        </button>
+      </div>
+
+      <p class="footer-note">Belum punya kode? Hubungi organizer perpisahan.</p>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 2: FORM (Tulis Pesan)
+         ══════════════════════════ -->
+    <div id="screen-form" class="screen">
+      <div class="badge">💌 Untuk Ana Witantri</div>
+
+      <h1>Tulis Pesanmu</h1>
+      <p class="sub">Bagikan kesan, kenangan, dan doa terbaikmu. Pesan ini hanya bisa dibaca oleh penerima</p>
+
+      <div class="card">
+        <div>
+          <label for="input-nama">Nama Kamu</label>
+          <input type="text" id="input-nama" placeholder="Nama lengkap / panggilan..." maxlength="80">
+        </div>
+
+        <div>
+          <label for="input-pesan">Pesanmu</label>
+          <textarea id="input-pesan" placeholder="Tulis pesanmu yang tulus di sini... 🌸" maxlength="800"></textarea>
+          <div class="char-count" id="char-count">0 / 800</div>
+        </div>
+
+        <div class="error-msg" id="form-error">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="form-error-text">Harap isi nama dan pesan terlebih dahulu.</span>
+        </div>
+
+        <button class="btn btn-primary" id="btn-submit">
+          <span id="btn-submit-text">Kirim Pesan</span>
+          <div class="spinner" id="submit-spinner"></div>
+          <i class="fa-solid fa-paper-plane" id="btn-submit-icon"></i>
+        </button>
+      </div>
+
+      <p class="footer-note">Pesanmu akan tersimpan dengan aman dan hanya tampil untuk Ana. 🔒</p>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 3: SUKSES
+         ══════════════════════════ -->
+    <div id="screen-success" class="screen">
+      <div class="success-icon">🎉</div>
+
+      <h1>Pesan Terkirim!</h1>
+      <p class="sub">Terima kasih, <strong id="nama-konfirmasi">teman</strong>!<br>Pesanmu sudah tersimpan untuk Ana.
+        Dia pasti akan terharu membacanya. 🌸</p>
+
+      <div style="width:100%; display:flex; flex-direction:column; gap:0.75rem;">
+        <button class="btn btn-primary" id="btn-add-more">
+          <i class="fa-solid fa-pen"></i>
+          <span>Tambah Pesan Lain</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-done">
+          <i class="fa-solid fa-check"></i>
+          <span>Selesai</span>
+        </button>
+      </div>
+
+      <p class="footer-note">Digital Farewell Memory &copy; 2026 · Made by: Grafcil Studio</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════
+    //  KONFIGURASI — Sesuaikan sebelum dibagikan
+    // ═══════════════════════════════════════════════════════
+
+    // Kode akses yang harus dimasukkan rekan kerja.
+    // Ganti dengan kode yang kamu inginkan.
+    const ACCESS_CODE = "sunnymart2026";
+
+    // URL Google Apps Script Web App (isi setelah deploy)
+    // Lihat SETUP_GUIDE.md untuk cara mendapatkan URL ini.
+    const API_URL = "https://script.google.com/macros/s/AKfycbzeMLNYNpTs5apPdqDjHBuXW2F2gGRF0Kqeb8m1kAb2pQhgXadwhM0uNEhprn52MkM/exec";
+
+    // ═══════════════════════════════════════════════════════
+    //  APP LOGIC
+    // ═══════════════════════════════════════════════════════
+
+    const screenGate = document.getElementById("screen-gate");
+    const screenForm = document.getElementById("screen-form");
+    const screenSuccess = document.getElementById("screen-success");
+
+    const inputCode = document.getElementById("input-code");
+    const gateError = document.getElementById("gate-error");
+    const btnUnlock = document.getElementById("btn-unlock");
+
+    const inputNama = document.getElementById("input-nama");
+    const inputPesan = document.getElementById("input-pesan");
+    const charCount = document.getElementById("char-count");
+    const formError = document.getElementById("form-error");
+    const formErrorText = document.getElementById("form-error-text");
+    const btnSubmit = document.getElementById("btn-submit");
+    const btnSubmitText = document.getElementById("btn-submit-text");
+    const submitSpinner = document.getElementById("submit-spinner");
+    const btnSubmitIcon = document.getElementById("btn-submit-icon");
+
+    const namaKonfirmasi = document.getElementById("nama-konfirmasi");
+    const btnAddMore = document.getElementById("btn-add-more");
+    const btnDone = document.getElementById("btn-done");
+
+    // ── Screen switching ──
+    function showScreen(screenEl) {
+      [screenGate, screenForm, screenSuccess].forEach(s => s.classList.remove("active"));
+      screenEl.classList.add("active");
+    }
+
+    // ── Gate: unlock with access code ──
+    btnUnlock.addEventListener("click", tryUnlock);
+    inputCode.addEventListener("keydown", e => { if (e.key === "Enter") tryUnlock(); });
+
+    function tryUnlock() {
+      const entered = inputCode.value.trim();
+      if (entered === ACCESS_CODE) {
+        gateError.classList.remove("visible");
+        showScreen(screenForm);
+        setTimeout(() => inputNama.focus(), 350);
+      } else {
+        gateError.classList.remove("visible");
+        void gateError.offsetWidth; // force reflow to re-trigger animation
+        gateError.classList.add("visible");
+        inputCode.value = "";
+        inputCode.focus();
+      }
+    }
+
+    // ── Form: character counter ──
+    inputPesan.addEventListener("input", () => {
+      const len = inputPesan.value.length;
+      charCount.textContent = `${len} / 800`;
+      charCount.classList.toggle("warn", len > 700);
+    });
+
+    // ── Form: submit ──
+    btnSubmit.addEventListener("click", submitPesan);
+
+    async function submitPesan() {
+      const nama = inputNama.value.trim();
+      const pesan = inputPesan.value.trim();
+
+      // Validasi
+      if (!nama) {
+        showFormError("Nama tidak boleh kosong ya! 😊");
+        inputNama.focus();
+        return;
+      }
+      if (!pesan) {
+        showFormError("Jangan lupa tulis pesannya! 🌸");
+        inputPesan.focus();
+        return;
+      }
+
+      // Loading state
+      setLoadingState(true);
+      formError.classList.remove("visible");
+
+      try {
+        if (!API_URL) {
+          // Mode demo: tidak ada API, simulasi berhasil setelah 1 detik
+          console.warn("API_URL kosong. Mode demo — pesan tidak benar-benar tersimpan.");
+          await delay(1000);
+        } else {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ nama, pesan }),
+            redirect: "follow",
+          });
+          if (!res.ok) throw new Error("Gagal menghubungi server.");
+        }
+
+        // Sukses!
+        namaKonfirmasi.textContent = nama.split(" ")[0]; // pakai nama depan
+        showScreen(screenSuccess);
+
+      } catch (err) {
+        console.error(err);
+        showFormError("Ups, ada masalah saat mengirim. Coba lagi! 🙏");
+      } finally {
+        setLoadingState(false);
+      }
+    }
+
+    function showFormError(msg) {
+      formErrorText.textContent = msg;
+      formError.classList.remove("visible");
+      void formError.offsetWidth;
+      formError.classList.add("visible");
+    }
+
+    function setLoadingState(loading) {
+      btnSubmit.disabled = loading;
+      btnSubmitText.textContent = loading ? "Mengirim..." : "Kirim Pesan";
+      submitSpinner.style.display = loading ? "block" : "none";
+      btnSubmitIcon.style.display = loading ? "none" : "inline";
+    }
+
+    // ── Success: add more / done ──
+    btnAddMore.addEventListener("click", () => {
+      inputNama.value = "";
+      inputPesan.value = "";
+      charCount.textContent = "0 / 800";
+      charCount.classList.remove("warn");
+      showScreen(screenForm);
+      setTimeout(() => inputNama.focus(), 350);
+    });
+
+    btnDone.addEventListener("click", () => {
+      window.close();
+      // fallback jika window.close() tidak diizinkan browser
+      document.body.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;min-height:100dvh;font-family:Poppins,sans-serif;text-align:center;padding:2rem;background:#FFF8F0;">
+          <div>
+            <div style="font-size:3rem;margin-bottom:1rem;">✨</div>
+            <h2 style="color:#2D2926;font-size:1.4rem;margin-bottom:0.5rem;">Terima kasih sudah ikut berpartisipasi!</h2>
+            <p style="color:#9E8E84;font-size:0.9rem;">Kamu bisa menutup tab ini sekarang.</p>
+          </div>
+        </div>`;
+    });
+
+    // ── Utility ──
+    function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+  </script>
+
+</body>
+
+</html>

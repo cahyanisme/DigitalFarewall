@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sebuah buku memori digital penuh kenangan hangat dari rekan-rekan kerja tercinta.">
+  <title>Digital Farewell Memory</title>
+
+  <!-- Google Fonts: Modern Gen Z Stack -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Animated mesh-gradient background -->
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+  </div>
+
+  <main class="app-container">
+
+    <!-- ══════════════════════════════════════
+         SCREEN 1 — LANDING
+         ══════════════════════════════════════ -->
+    <section id="screen-landing" class="screen active" aria-label="Landing page">
+      <div class="landing-content">
+
+        <div class="badge">✦ Digital Memory Book ✦</div>
+
+        <h1 class="main-title">Secimit Pesan<br>Hangat</h1>
+
+        <p class="subtitle">Pesan sederhana, dibalut harapan dan doa terbaik, untukmu yang pernah menjadi bagian dari
+          cerita kami.</p>
+
+        <!-- Recipient Card -->
+        <div class="recipient-card">
+          <span class="to-label">dari kami semua untuk,</span>
+          <h2 id="recipient-name" class="recipient-name">ANA WITANTRI</h2>
+        </div>
+
+        <!-- Envelope Illustration -->
+        <div class="envelope-wrapper" aria-hidden="true">
+          <div class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-letter">
+              <div class="letter-preview-line"></div>
+              <div class="letter-preview-line short"></div>
+              <i class="fa-solid fa-heart letter-heart"></i>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-open-letter" class="btn btn-primary">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span>Buka Surat</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 2 — LETTER READER
+         ══════════════════════════════════════ -->
+    <section id="screen-reader" class="screen" aria-label="Pembaca surat">
+
+      <!-- Header -->
+      <div class="reader-header">
+        <div class="mini-title">Surat Kenangan</div>
+        <div class="progress-container">
+          <div class="progress-circle-wrap">
+            <!-- SVG gradient definition -->
+            <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+              <defs>
+                <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FF8C5A" />
+                  <stop offset="100%" stop-color="#FFCC66" />
+                </linearGradient>
+              </defs>
+              <circle class="progress-ring__circle-bg" stroke="rgba(255, 140, 90, 0.15)" stroke-width="3"
+                fill="transparent" r="18" cx="22" cy="22" />
+              <circle class="progress-ring__circle" id="progress-ring-indicator" stroke="url(#progressGrad)"
+                stroke-width="3" stroke-linecap="round" fill="transparent" r="18" cx="22" cy="22" />
+            </svg>
+            <span id="progress-text-mini" class="progress-text-mini">1/1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Letter Display -->
+      <div class="letter-desk">
+        <div id="letter-container" class="letter-container">
+          <!-- Rendered dynamically by app.js -->
+          <div class="letter-paper">
+            <div class="letter-content-inner">
+              <p class="letter-message">Sedang mengambil pesan kenangan...</p>
+              <div class="letter-signature">— <span class="letter-sender">Seseorang</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Controls -->
+      <div class="reader-footer">
+        <button id="btn-prev" class="btn btn-secondary btn-nav" disabled aria-label="Surat sebelumnya">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Sebelumnya</span>
+        </button>
+
+        <span id="progress-label" class="progress-label" aria-live="polite">Surat 1 dari 1</span>
+
+        <button id="btn-next" class="btn btn-primary btn-nav" aria-label="Surat berikutnya">
+          <span>Selanjutnya</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SCREEN 3 — CLOSING
+         ══════════════════════════════════════ -->
+    <section id="screen-closing" class="screen" aria-label="Halaman penutup">
+      <div class="closing-content">
+
+        <div class="closing-icon" aria-hidden="true">
+          <i class="fa-solid fa-gift floating-gift"></i>
+        </div>
+
+        <h2 class="closing-title">Sukses Selalu<br>Mba Ana!</h2>
+
+        <div class="closing-card">
+          <p class="closing-message">
+            Terima kasih sudah jadi sosok emba yang mengayomi 14 adeknya dengan spesies yang berbeda-beda,
+            selalu sabar ngadepin polah kami, dan terima kasih atas tawa dan kehangatanya.
+            Semoga sukses selalu Mba Ana!
+          </p>
+          <div class="closing-signature">
+            <span class="sig-from">Dengan penuh kehangatan,</span>
+            <span id="sender-signature-team" class="sig-team">Para Pengabdi Surya</span>
+          </div>
+        </div>
+
+        <div class="closing-actions">
+          <button id="btn-restart" class="btn btn-secondary">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Baca Ulang</span>
+          </button>
+        </div>
+
+        <p class="footer-credit">Digital Farewell Memory &copy; 2026 · Made By: Grafcil Studio</p>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
